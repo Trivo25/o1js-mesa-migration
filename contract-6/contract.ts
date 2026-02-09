@@ -27,13 +27,14 @@ export { FullyLockedZkApp };
  * preservation across the upgrade.
  */
 class FullyLockedZkApp extends SmartContract {
-  @state(Field) counter = State<Field>();
-  @state(Field) marker = State<Field>();
-  @state(Field) actionState = State<Field>();
-  @state(Field) extra = State<Field>();
+  @state(Field) counter: State<Field> = State<Field>();
+  @state(Field) marker: State<Field> = State<Field>();
+  @state(Field) actionState: State<Field> = State<Field>();
+  @state(Field) extra: State<Field> = State<Field>();
 
-  events = { 'state-change': Field };
-  reducer = Reducer({ actionType: Field });
+  events: { 'state-change': typeof Field } = { 'state-change': Field };
+  reducer: ReturnType<typeof Reducer<typeof Field>> =
+    Reducer({ actionType: Field });
 
   async deploy() {
     await super.deploy();

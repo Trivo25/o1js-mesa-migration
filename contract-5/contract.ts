@@ -20,8 +20,8 @@ export { LockedPermsZkApp };
  * update TX is all that's needed.
  */
 class LockedPermsZkApp extends SmartContract {
-  @state(Field) counter = State<Field>();
-  @state(Field) marker = State<Field>();
+  @state(Field) counter: State<Field> = State<Field>();
+  @state(Field) marker: State<Field> = State<Field>();
 
   async deploy() {
     await super.deploy();

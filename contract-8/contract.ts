@@ -18,7 +18,7 @@ export { ProofOrSigZkApp };
  * even when the permission is already permissive.
  */
 class ProofOrSigZkApp extends SmartContract {
-  @state(Field) x = State<Field>();
+  @state(Field) x: State<Field> = State<Field>();
 
   async deploy() {
     await super.deploy();

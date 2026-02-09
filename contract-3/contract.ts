@@ -19,8 +19,8 @@ export { ProofUpgradeableZkApp };
  * `txnVersion` auto-bumps, the VK requires proof again.
  */
 class ProofUpgradeableZkApp extends SmartContract {
-  @state(Field) counter = State<Field>();
-  @state(Field) marker = State<Field>();
+  @state(Field) counter: State<Field> = State<Field>();
+  @state(Field) marker: State<Field> = State<Field>();
 
   async deploy() {
     await super.deploy();

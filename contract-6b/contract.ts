@@ -24,7 +24,7 @@ export { AccessImpossibleZkApp };
  * the developer intentionally locked all access remain permanently locked.
  */
 class AccessImpossibleZkApp extends SmartContract {
-  @state(Field) x = State<Field>();
+  @state(Field) x: State<Field> = State<Field>();
 
   async deploy() {
     await super.deploy();
