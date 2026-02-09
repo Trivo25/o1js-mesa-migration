@@ -1,0 +1,22 @@
+{
+  "name": "zkapp-upgrade-tests",
+  "version": "0.1.0",
+  "description": "zkApp hardfork migration and upgrade test contracts",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.19.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "o1js": "^2.12.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "tsx": "^4.19.0",
+    "@types/node": "^22.0.0"
+  }
+}
