@@ -20,8 +20,8 @@ export { AccessProofZkApp };
  * permissions revert to their original semantics.
  */
 class AccessProofZkApp extends SmartContract {
-  @state(Field) counter: State<Field> = State<Field>();
-  @state(Field) marker: State<Field> = State<Field>();
+  @state(Field) counter = State<Field>();
+  @state(Field) marker = State<Field>();
 
   async deploy() {
     await super.deploy();

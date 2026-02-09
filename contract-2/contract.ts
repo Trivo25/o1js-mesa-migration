@@ -19,8 +19,8 @@ export { LockedVkZkApp };
  * auto-bumps, the VK is locked again.
  */
 class LockedVkZkApp extends SmartContract {
-  @state(Field) counter: State<Field> = State<Field>();
-  @state(Field) marker: State<Field> = State<Field>();
+  @state(Field) counter = State<Field>();
+  @state(Field) marker = State<Field>();
 
   async deploy() {
     await super.deploy();

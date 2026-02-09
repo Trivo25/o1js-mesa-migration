@@ -3,7 +3,7 @@ import { Field, SmartContract, State, method, state } from 'o1js';
 export { DefaultPermsZkApp };
 
 class DefaultPermsZkApp extends SmartContract {
-  @state(Field) x: State<Field> = State<Field>();
+  @state(Field) x = State<Field>();
 
   init() {
     super.init();

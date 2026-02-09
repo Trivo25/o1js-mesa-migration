@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "run": "tsx"
   },
   "dependencies": {
     "o1js": "^2.12.0"
