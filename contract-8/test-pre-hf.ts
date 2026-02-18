@@ -3,10 +3,15 @@ import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
 import { ProofOrSigZkApp } from './contract.js';
 
 configureNetwork();
-const transactionFee = 100_000_000;
+const transactionFee = 200_000_000;
 
 const keysDir = new URL('.', import.meta.url).pathname;
-const { zkAppKey, senderKey, zkAppAddress, verificationKey: savedVK } = loadKeys(keysDir);
+const {
+  zkAppKey,
+  senderKey,
+  zkAppAddress,
+  verificationKey: savedVK,
+} = loadKeys(keysDir);
 const sender = senderKey.toPublicKey();
 const verificationKey = { data: savedVK.data, hash: Field(savedVK.hash) };
 
@@ -40,23 +45,36 @@ console.log(`x after: ${xAfter}`);
 xAfter.assertEquals(Field(42));
 console.log('State updated correctly.');
 
-console.log('\n=== Test: VK upgrade via signature (expecting success — proofOrSignature) ===');
+console.log('\n=== Test: VK upgrade via signature (expecting failure) ===');
 await fetchAccount({ publicKey: sender });
 
-const txSig = await Mina.transaction({ sender, fee: transactionFee }, async () => {
-  const accountUpdate = AccountUpdate.createSigned(zkAppAddress);
-  accountUpdate.account.verificationKey.set(verificationKey);
-});
-await sendAndWait(txSig, [senderKey, zkAppKey]);
-console.log('VK change via signature succeeded (proofOrSignature allows it).');
+try {
+  const txSig = await Mina.transaction(
+    { sender, fee: transactionFee },
+    async () => {
+      const accountUpdate = AccountUpdate.createSigned(zkAppAddress);
+      accountUpdate.account.verificationKey.set(verificationKey);
+    },
+  );
+  await sendAndWait(txSig, [senderKey, zkAppKey]);
+  throw new Error('VK change via signature succeeded unexpectedly!');
+} catch (error: any) {
+  if (error.message.includes('succeeded unexpectedly')) throw error;
+  console.log(`Expected failure: ${error.message}`);
+  console.log('VK change via signature correctly rejected.');
+}
+console.log('VK change via signature failed (proofOrSignature disallows it).');
 
-console.log('\n=== Test: VK upgrade via proof (expecting success — proofOrSignature) ===');
+console.log('\n=== Test: VK upgrade via proof (expecting success) ===');
 await fetchAccount({ publicKey: zkAppAddress });
 await fetchAccount({ publicKey: sender });
 
-const txProof = await Mina.transaction({ sender, fee: transactionFee }, async () => {
-  await zkApp.updateVk(verificationKey);
-});
+const txProof = await Mina.transaction(
+  { sender, fee: transactionFee },
+  async () => {
+    await zkApp.updateVk(verificationKey);
+  },
+);
 const provenTxProof = await txProof.prove();
 await sendAndWait(provenTxProof, [senderKey]);
 console.log('VK change via proof succeeded (proofOrSignature allows it).');

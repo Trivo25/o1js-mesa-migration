@@ -9,7 +9,7 @@ import { ProofOrSigZkApp } from './contract.js';
 
 configureNetwork();
 const { senderKey, sender } = loadSenderKey();
-const transactionFee = 100_000_000;
+const transactionFee = 200_000_000;
 
 const zkAppKey = PrivateKey.random();
 const zkAppAddress = zkAppKey.toPublicKey();
