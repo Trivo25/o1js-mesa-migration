@@ -10,7 +10,10 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "run": "tsx"
+    "run": "tsx",
+    "setup-feepayers": "tsx setup-feepayers.ts",
+    "pre-hf": "tsx run-pre-hf.ts",
+    "post-hf": "tsx run-post-hf.ts"
   },
   "dependencies": {
     "o1js": "^2.12.0"
