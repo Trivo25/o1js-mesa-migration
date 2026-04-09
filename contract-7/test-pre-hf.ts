@@ -6,7 +6,12 @@ configureNetwork();
 const transactionFee = 100_000_000;
 
 const keysDir = new URL('.', import.meta.url).pathname;
-const { zkAppKey, senderKey, zkAppAddress, verificationKey: savedVK } = loadKeys(keysDir);
+const {
+  zkAppKey,
+  senderKey,
+  zkAppAddress,
+  verificationKey: savedVK,
+} = loadKeys(keysDir);
 const sender = senderKey.toPublicKey();
 const verificationKey = { data: savedVK.data, hash: Field(savedVK.hash) };
 
@@ -45,32 +50,42 @@ console.log('\n=== Test: VK upgrade via signature (expecting failure) ===');
 await fetchAccount({ publicKey: sender });
 
 try {
-  const txSig = await Mina.transaction({ sender, fee: transactionFee }, async () => {
-    const accountUpdate = AccountUpdate.createSigned(zkAppAddress);
-    accountUpdate.account.verificationKey.set(verificationKey);
-  });
+  const txSig = await Mina.transaction(
+    { sender, fee: transactionFee },
+    async () => {
+      const accountUpdate = AccountUpdate.createSigned(zkAppAddress);
+      accountUpdate.account.verificationKey.set(verificationKey);
+    },
+  );
   await sendAndWait(txSig, [senderKey, zkAppKey]);
   throw new Error('VK change via signature succeeded unexpectedly!');
 } catch (error: any) {
   if (error.message.includes('succeeded unexpectedly')) throw error;
   console.log(`Expected failure: ${error.message}`);
-  console.log('VK change via signature correctly rejected (impossibleDuringCurrentVersion).');
+  console.log(
+    'VK change via signature correctly rejected (impossibleDuringCurrentVersion).',
+  );
 }
 
 console.log('\n=== Test: VK upgrade via proof (expecting failure) ===');
 await fetchAccount({ publicKey: sender });
 
 try {
-  const txProof = await Mina.transaction({ sender, fee: transactionFee }, async () => {
-    await zkApp.updateVk(verificationKey);
-  });
+  const txProof = await Mina.transaction(
+    { sender, fee: transactionFee },
+    async () => {
+      await zkApp.updateVk(verificationKey);
+    },
+  );
   const provenTxProof = await txProof.prove();
   await sendAndWait(provenTxProof, [senderKey]);
   throw new Error('VK change via proof succeeded unexpectedly!');
 } catch (error: any) {
   if (error.message.includes('succeeded unexpectedly')) throw error;
   console.log(`Expected failure: ${error.message}`);
-  console.log('VK change via proof correctly rejected (impossibleDuringCurrentVersion).');
+  console.log(
+    'VK change via proof correctly rejected (impossibleDuringCurrentVersion).',
+  );
 }
 
 console.log('\nPre-hardfork test passed!');
