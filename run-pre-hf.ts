@@ -28,16 +28,20 @@ const deployPromises = CONTRACT_DIRS.map(async (dir) => {
   const fp = feepayers[dir];
   if (!fp) throw new Error(`No feepayer for ${dir}`);
 
-  const { exitCode, stderr } = await runScript(`${dir}/deploy.ts`, {
+  const env = {
     MINA_GRAPHQL_ENDPOINT: endpoint,
     MINA_SENDER_KEY: fp.privateKey,
-  }, dir);
+  };
+  const script = `${dir}/deploy.ts`;
+  const { exitCode, stderr } = await runScript(script, env, dir);
 
   const result: ContractResult = {
     contract: dir,
     phase: 'deploy',
     status: exitCode === 0 ? 'PASS' : 'FAIL',
     error: exitCode !== 0 ? stderr : undefined,
+    script,
+    env,
   };
   results.push(result);
   return result;
@@ -52,15 +56,17 @@ console.log(`\n${deployed.length}/${CONTRACT_DIRS.length} contracts deployed.\n`
 console.log('=== Phase 1b: Running pre-hardfork tests ===\n');
 
 const testPromises = deployed.map(async (d) => {
-  const { exitCode, stderr } = await runScript(`${d.contract}/test-pre-hf.ts`, {
-    MINA_GRAPHQL_ENDPOINT: endpoint,
-  }, d.contract);
+  const env = { MINA_GRAPHQL_ENDPOINT: endpoint };
+  const script = `${d.contract}/test-pre-hf.ts`;
+  const { exitCode, stderr } = await runScript(script, env, d.contract);
 
   const result: ContractResult = {
     contract: d.contract,
     phase: 'test-pre-hf',
     status: exitCode === 0 ? 'PASS' : 'FAIL',
     error: exitCode !== 0 ? stderr : undefined,
+    script,
+    env,
   };
   results.push(result);
   return result;

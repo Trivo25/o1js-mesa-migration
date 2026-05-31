@@ -27,17 +27,17 @@ console.log('=== Phase 3: Post-hardfork migration tests ===\n');
 const results: ContractResult[] = [];
 
 const promises = CONTRACT_DIRS.map(async (dir) => {
-  const { exitCode, stderr } = await runScript(
-    `${dir}/migrate-and-test.ts`,
-    { MINA_GRAPHQL_ENDPOINT: endpoint },
-    dir
-  );
+  const env = { MINA_GRAPHQL_ENDPOINT: endpoint };
+  const script = `${dir}/migrate-and-test.ts`;
+  const { exitCode, stderr } = await runScript(script, env, dir);
 
   const result: ContractResult = {
     contract: dir,
     phase: 'migrate-and-test',
     status: exitCode === 0 ? 'PASS' : 'FAIL',
     error: exitCode !== 0 ? stderr : undefined,
+    script,
+    env,
   };
   results.push(result);
   return result;

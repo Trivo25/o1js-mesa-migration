@@ -25,6 +25,9 @@ type ContractResult = {
   phase: string;
   status: 'PASS' | 'FAIL';
   error?: string;
+  // set by the runners so the summary can print an exact rerun command
+  script?: string;
+  env?: Record<string, string>;
 };
 
 function loadFeepayers(): Feepayers {
@@ -103,12 +106,53 @@ function printSummary(results: ContractResult[]) {
   console.log(`  ${passed.length} passed, ${failed.length} failed`);
 
   if (failed.length > 0) {
-    console.log('\n  Failures:');
+    console.log('\n  Failures (last error + rerun command):');
+    console.log('  (run `npm run build` first if you changed any code)\n');
     for (const r of failed) {
-      const lastLine = r.error?.split('\n').filter(Boolean).pop() ?? 'unknown';
-      console.log(`    ${r.contract} (${r.phase}): ${lastLine}`);
+      console.log(`  ${r.contract} (${r.phase})`);
+      console.log(`    error: ${extractError(r.error)}`);
+      const cmd = rerunCommand(r);
+      if (cmd) console.log(`    rerun: ${cmd}`);
+      console.log('');
     }
   }
 
   console.log('');
+}
+
+// internal helpers
+
+// pull the meaningful lines out of a crashed process's stderr: the thrown
+// message and any detail lines (the real cause is often a line or two below
+// a generic wrapper like "Transaction failed with errors:"), while skipping
+// node crash boilerplate (the file:line header, `throw`, the `^` caret, stack
+// frames, the `Node.js vX` footer). Returns up to `maxLines`, indented to align
+// under the "error: " label.
+function extractError(stderr?: string, maxLines = 6): string {
+  if (!stderr) return 'unknown';
+  const meaningful = stderr
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(
+      (l) =>
+        l &&
+        l !== '^' &&
+        !l.startsWith('at ') &&
+        !l.startsWith('throw ') &&
+        !/^Node\.js v/.test(l) &&
+        !/\.(c?js|ts):\d+$/.test(l) // file:line crash header
+    );
+  if (meaningful.length === 0) return 'unknown';
+  return meaningful.slice(0, maxLines).join('\n' + ' '.repeat(11));
+}
+
+// rebuild the exact command the runner used, so a failed contract can be rerun
+// by itself. mirrors runScript: compiled JS under dist, with the same env.
+function rerunCommand(r: ContractResult): string {
+  if (!r.script) return '';
+  const compiled = path.join('dist', r.script.replace(/\.ts$/, '.js'));
+  const env = Object.entries(r.env ?? {})
+    .map(([k, v]) => `${k}=${JSON.stringify(v)}`)
+    .join(' ');
+  return `${env} node ${compiled}`.trim();
 }
