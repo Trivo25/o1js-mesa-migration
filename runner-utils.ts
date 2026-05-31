@@ -45,7 +45,11 @@ function runScript(
   label: string
 ): Promise<{ exitCode: number; stdout: string; stderr: string }> {
   return new Promise((resolve) => {
-    const child = spawn('npx', ['tsx', scriptPath], {
+    // run the tsc-compiled output, not the .ts via tsx: o1js's @method reads
+    // `design:paramtypes` reflect metadata, which tsc emits but esbuild (tsx)
+    // does not — under tsx the decorator gets undefined args and crashes.
+    const compiled = path.join('dist', scriptPath.replace(/\.ts$/, '.js'));
+    const child = spawn('node', [compiled], {
       env: { ...process.env, ...env },
       stdio: ['ignore', 'pipe', 'pipe'],
     });

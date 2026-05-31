@@ -12,8 +12,8 @@
     "clean": "rm -rf dist",
     "run": "tsx",
     "setup-feepayers": "tsx setup-feepayers.ts",
-    "pre-hf": "tsx run-pre-hf.ts",
-    "post-hf": "tsx run-post-hf.ts"
+    "pre-hf": "tsc && node dist/run-pre-hf.js",
+    "post-hf": "tsc && node dist/run-post-hf.js"
   },
   "dependencies": {
     "o1js": "^2.15.0"

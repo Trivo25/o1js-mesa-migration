@@ -2,5 +2,6 @@ node_modules/
 dist/
 run.sh
 feepayers.json
+feepayers.tmp.json
 **/keys.json
 **/merkle-data.json
