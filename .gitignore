@@ -3,3 +3,4 @@ dist/
 run.sh
 feepayers.json
 **/keys.json
+**/merkle-data.json

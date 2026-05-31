@@ -15,6 +15,7 @@ const CONTRACT_DIRS = [
   'contract-6b',
   'contract-7',
   'contract-8',
+  'contract-9',
 ];
 
 type Feepayers = Record<string, { privateKey: string; publicKey: string }>;

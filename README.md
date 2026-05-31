@@ -8,17 +8,17 @@
 
 ## Contracts
 
-| # | Contract | VK Permission | Other Permissions | What It Tests |
-|---|----------|--------------|-------------------|---------------|
-| 1 | DefaultPerms | default | default | Baseline - no custom permissions |
-| 2 | LockedVk | `impossibleDuringCurrentVersion` | - | VK locked pre-HF, falls back to signature post-HF |
-| 3 | ProofUpgradeable | `proofDuringCurrentVersion` | - | VK upgradeable via proof pre-HF, falls back to signature post-HF |
-| 4 | AccessProof | `impossibleDuringCurrentVersion` | `access: proof` | Both VK and access fall back to signature |
-| 5 | LockedPerms | `impossibleDuringCurrentVersion` | `setPermissions: impossible` | Locked permissions are not a blocker for VK upgrade |
-| 6 | FullyLocked | `impossibleDuringCurrentVersion` | all locked + events + actions | Everything falls back, state/events/actions preserved |
-| 6b | AccessImpossible | `impossibleDuringCurrentVersion` | `access: impossible` | **Negative test** - should stay permanently locked |
-| 7 | LockedToken | `impossibleDuringCurrentVersion` | token contract, `access: proofOrSignature` | Token contract VK upgrade |
-| 8 | ProofOrSig | `proofDuringCurrentVersion` | - | Control - already permissive, no fallback needed |
+| #   | Contract         | VK Permission                    | Other Permissions                          | What It Tests                                                    |
+| --- | ---------------- | -------------------------------- | ------------------------------------------ | ---------------------------------------------------------------- |
+| 1   | DefaultPerms     | default                          | default                                    | Baseline - no custom permissions                                 |
+| 2   | LockedVk         | `impossibleDuringCurrentVersion` | -                                          | VK locked pre-HF, falls back to signature post-HF                |
+| 3   | ProofUpgradeable | `proofDuringCurrentVersion`      | -                                          | VK upgradeable via proof pre-HF, falls back to signature post-HF |
+| 4   | AccessProof      | `impossibleDuringCurrentVersion` | `access: proof`                            | Both VK and access fall back to signature                        |
+| 5   | LockedPerms      | `impossibleDuringCurrentVersion` | `setPermissions: impossible`               | Locked permissions are not a blocker for VK upgrade              |
+| 6   | FullyLocked      | `impossibleDuringCurrentVersion` | all locked + events + actions              | Everything falls back, state/events/actions preserved            |
+| 6b  | AccessImpossible | `impossibleDuringCurrentVersion` | `access: impossible`                       | **Negative test** - should stay permanently locked               |
+| 7   | LockedToken      | `impossibleDuringCurrentVersion` | token contract, `access: proofOrSignature` | Token contract VK upgrade                                        |
+| 8   | ProofOrSig       | `proofDuringCurrentVersion`      | -                                          | Control - already permissive, no fallback needed                 |
 
 ## Quick Start
 
