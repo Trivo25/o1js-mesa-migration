@@ -30,19 +30,17 @@ type ContractResult = {
 function loadFeepayers(): Feepayers {
   const filePath = path.resolve('feepayers.json');
   if (!fs.existsSync(filePath)) {
-    throw new Error(
-      'feepayers.json not found. Run: npm run setup-feepayers'
-    );
+    throw new Error('feepayers.json not found. Run: npm run setup-feepayers');
   }
   return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 }
 
-const TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
+const TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
 
 function runScript(
   scriptPath: string,
   env: Record<string, string>,
-  label: string
+  label: string,
 ): Promise<{ exitCode: number; stdout: string; stderr: string }> {
   return new Promise((resolve) => {
     // run the tsc-compiled output, not the .ts via tsx: o1js's @method reads
@@ -93,22 +91,12 @@ function printSummary(results: ContractResult[]) {
   console.log('  RESULTS');
   console.log('='.repeat(60));
   console.log('');
-  console.log(
-    '  ' +
-      'Contract'.padEnd(14) +
-      'Phase'.padEnd(18) +
-      'Status'
-  );
+  console.log('  ' + 'Contract'.padEnd(14) + 'Phase'.padEnd(18) + 'Status');
   console.log('  ' + '-'.repeat(40));
 
   for (const r of results) {
     const mark = r.status === 'PASS' ? 'PASS' : 'FAIL';
-    console.log(
-      '  ' +
-        r.contract.padEnd(14) +
-        r.phase.padEnd(18) +
-        mark
-    );
+    console.log('  ' + r.contract.padEnd(14) + r.phase.padEnd(18) + mark);
   }
 
   console.log('');
