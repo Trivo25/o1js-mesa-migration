@@ -1,5 +1,5 @@
 import { AccountUpdate, Field, Mina, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { ProofOrSigZkApp } from './contract.js';
 
 configureNetwork();
@@ -22,7 +22,7 @@ console.log('Compilation complete.');
 const zkApp = new ProofOrSigZkApp(zkAppAddress);
 
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const xBefore = zkApp.x.get();
 console.log(`x before: ${xBefore}`);
 
@@ -38,7 +38,7 @@ const provenTx = await tx.prove();
 await sendAndWait(provenTx, [senderKey]);
 
 console.log('\nFetching updated account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const xAfter = zkApp.x.get();
 console.log(`x after: ${xAfter}`);
 
@@ -66,7 +66,7 @@ try {
 console.log('VK change via signature failed (proofOrSignature disallows it).');
 
 console.log('\n=== Test: VK upgrade via proof (expecting success) ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 
 const txProof = await Mina.transaction(

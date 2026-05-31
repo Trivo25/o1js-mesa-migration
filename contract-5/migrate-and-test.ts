@@ -1,5 +1,5 @@
 import { AccountUpdate, Field, Mina, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { LockedPermsZkApp } from './contract.js';
 
 configureNetwork();
@@ -33,7 +33,7 @@ console.log('Verification key changed as expected.');
 const zkApp = new LockedPermsZkApp(zkAppAddress);
 
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 const counterBefore = zkApp.counter.get();
 const markerBefore = zkApp.marker.get();
@@ -67,7 +67,7 @@ console.log('Verification key upgraded (setPermissions: impossible was not a blo
 
 console.log('\n=== Step 3: Post-upgrade interaction (expecting success) ===');
 
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 
 const txSuccess = await Mina.transaction({ sender, fee: transactionFee }, async () => {
@@ -79,7 +79,7 @@ await sendAndWait(provenTxSuccess, [senderKey]);
 console.log('Post-upgrade interaction succeeded.');
 
 console.log('\n=== Step 4: Verifying final state ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const counterAfter = zkApp.counter.get();
 const markerAfter = zkApp.marker.get();
 console.log(`Counter after: ${counterAfter}`);

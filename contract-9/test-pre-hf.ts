@@ -1,6 +1,6 @@
 import { Field, MerkleTree, Mina, Poseidon, fetchAccount } from 'o1js';
 import * as fs from 'fs';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { MerkleRootZkApp, MerkleWitness10, TREE_HEIGHT } from './contract.js';
 
 configureNetwork();
@@ -34,7 +34,7 @@ const zkApp = new MerkleRootZkApp(zkAppAddress);
 
 // verify on-chain root matches off-chain
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 let onChainRoot = zkApp.root.get();
 console.log(`On-chain root:  ${onChainRoot}`);
 console.log(`Off-chain root: ${offChainRoot}`);
@@ -63,7 +63,7 @@ tree.setLeaf(BigInt(index), newLeaf);
 leaves[index] = newLeaf;
 let newRoot = tree.getRoot();
 
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 let onChainRootAfter = zkApp.root.get();
 console.log(`\nOn-chain root after update:  ${onChainRootAfter}`);
 console.log(`Off-chain root after update: ${newRoot}`);

@@ -1,5 +1,5 @@
 import { AccountUpdate, Field, Mina, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { LockedVkZkApp } from './contract.js';
 
 configureNetwork();
@@ -17,7 +17,7 @@ console.log('Compilation complete.');
 const zkApp = new LockedVkZkApp(zkAppAddress);
 
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const counterBefore = zkApp.counter.get();
 const marker = zkApp.marker.get();
 console.log(`Counter before: ${counterBefore}`);
@@ -35,7 +35,7 @@ const provenTx = await tx.prove();
 await sendAndWait(provenTx, [senderKey]);
 
 console.log('\nFetching updated account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const counterAfter = zkApp.counter.get();
 const markerAfter = zkApp.marker.get();
 console.log(`Counter after: ${counterAfter}`);

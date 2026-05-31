@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"echo \\\"=== dist keys.json (what test reads) ===\\\"; for c in contract-1 contract-2 contract-4 contract-5; do echo -n \\\"$c dist: \\\"; cat dist/$c/keys.json 2>/dev/null | grep -o '\\\"zkAppAddre...",
+  "error": "Exit code 1\n=== dist keys.json (what test reads) ===\ncontract-1 dist: \"zkAppAddress\": \"B62qk1EsCNuB9DJaUYRZ5BmmgeWVqX3Rh8rYppaqpuKX7whCEzUzU2j\"\ncontract-2 dist: \"zkAppAddress\": \"B62qjzbgRM6erMdTWtnyVqLyfTnX8ZZKCboHTUwSLvXXiDWi3SMDtx7\"\ncontract-4 dist: \"zkAppAddress\": \"B62qknzKn74zQFhKyFK5LREJ9ywzysYuUDppLQiKVpw5Y71Vs2NkbKd\"\ncontract-5 dist: \"zkAppAddress\": \"B62qr72afqoikiaeX86CQGVydoW2Ss7F9iiYmaFwPjAUwbT4M6prhsa\"\n\n=== source keys.json (legacy tsx location) ===\ncontract-1 src:  MISSING\ncontract-2...",
+  "timestamp": "2026-05-31T10:59:50.309Z",
+  "retry_count": 1
+}

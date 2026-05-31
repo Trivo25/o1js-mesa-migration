@@ -7,7 +7,7 @@ import {
   fetchAccount,
 } from 'o1js';
 import * as fs from 'fs';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { MerkleRootZkApp, MerkleWitness10, TREE_HEIGHT } from './contract.js';
 
 configureNetwork();
@@ -57,7 +57,7 @@ console.log('Verification key changed as expected.');
 const zkApp = new MerkleRootZkApp(zkAppAddress);
 
 console.log('\n=== Step 0: Verifying on-chain root matches rebuilt tree ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 let onChainRoot = zkApp.root.get();
 console.log(`On-chain root:  ${onChainRoot}`);
@@ -102,7 +102,7 @@ await sendAndWait(txUpgrade, [senderKey, zkAppKey]);
 console.log('Verification key upgraded.');
 
 console.log('\n=== Step 3: Post-upgrade interaction (expecting success) ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 
 const txSuccess = await Mina.transaction(
@@ -121,7 +121,7 @@ leaves[index] = newLeaf;
 let expectedRoot = tree.getRoot();
 
 console.log('\n=== Step 4: Verifying final root ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 let finalRoot = zkApp.root.get();
 console.log(`Final on-chain root:  ${finalRoot}`);
 console.log(`Final off-chain root: ${expectedRoot}`);

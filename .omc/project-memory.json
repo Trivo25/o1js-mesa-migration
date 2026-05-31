@@ -1,0 +1,237 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1780214942308,
+  "projectRoot": "/Users/trivo/Documents/GitHub/o1js-mesa-migration",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": ">=22.19.5",
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "npm",
+    "runtime": "Node.js 22.19.5"
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {
+      "build": "tsc",
+      "clean": "rm -rf dist",
+      "run": "tsx",
+      "setup-feepayers": "tsx setup-feepayers.ts",
+      "pre-hf": "tsx run-pre-hf.ts",
+      "post-hf": "tsx run-post-hf.ts"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "contract-1": {
+      "path": "contract-1",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942264,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    },
+    "contract-2": {
+      "path": "contract-2",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942264,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    },
+    "contract-3": {
+      "path": "contract-3",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942264,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    },
+    "contract-4": {
+      "path": "contract-4",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942265,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    },
+    "contract-5": {
+      "path": "contract-5",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942271,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    },
+    "contract-6": {
+      "path": "contract-6",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942300,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    },
+    "contract-6b": {
+      "path": "contract-6b",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942300,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    },
+    "contract-7": {
+      "path": "contract-7",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942300,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    },
+    "contract-8": {
+      "path": "contract-8",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942300,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    },
+    "contract-9": {
+      "path": "contract-9",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1780214942300,
+      "keyFiles": [
+        "contract.ts",
+        "deploy.ts",
+        "migrate-and-test.ts",
+        "test-pre-hf.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "setup-feepayers.ts",
+      "accessCount": 6,
+      "lastAccessed": 1780216043116,
+      "type": "file"
+    },
+    {
+      "path": "util.ts",
+      "accessCount": 5,
+      "lastAccessed": 1780225362046,
+      "type": "file"
+    },
+    {
+      "path": "runner-utils.ts",
+      "accessCount": 3,
+      "lastAccessed": 1780221625451,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 2,
+      "lastAccessed": 1780221640706,
+      "type": "file"
+    },
+    {
+      "path": "tsconfig.json",
+      "accessCount": 1,
+      "lastAccessed": 1780221319378,
+      "type": "file"
+    },
+    {
+      "path": "contract-1/contract.ts",
+      "accessCount": 1,
+      "lastAccessed": 1780221319955,
+      "type": "file"
+    },
+    {
+      "path": "run-pre-hf.ts",
+      "accessCount": 1,
+      "lastAccessed": 1780221364418,
+      "type": "file"
+    },
+    {
+      "path": "contract-1/deploy.ts",
+      "accessCount": 1,
+      "lastAccessed": 1780221396813,
+      "type": "file"
+    },
+    {
+      "path": "contract-1/test-pre-hf.ts",
+      "accessCount": 1,
+      "lastAccessed": 1780225094284,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

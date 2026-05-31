@@ -1,5 +1,5 @@
 import { AccountUpdate, Field, Mina, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { ProofOrSigZkApp } from './contract.js';
 
 configureNetwork();
@@ -33,7 +33,7 @@ console.log('Verification key changed as expected.');
 const zkApp = new ProofOrSigZkApp(zkAppAddress);
 
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 const xBefore = zkApp.x.get();
 console.log(`x before migration: ${xBefore}`);
@@ -65,7 +65,7 @@ console.log('Verification key upgraded (no fallback needed — proofOrSignature)
 
 console.log('\n=== Step 3: Post-upgrade interaction (expecting success) ===');
 
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 
 const postUpgradeValue = Field(200);
@@ -78,7 +78,7 @@ await sendAndWait(provenTxSuccess, [senderKey]);
 console.log('Post-upgrade interaction succeeded.');
 
 console.log('\n=== Step 4: Verifying final state ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const xAfter = zkApp.x.get();
 console.log(`x after: ${xAfter}`);
 

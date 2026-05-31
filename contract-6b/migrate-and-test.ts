@@ -1,5 +1,5 @@
 import { AccountUpdate, Field, Mina, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { AccessImpossibleZkApp } from './contract.js';
 
 configureNetwork();
@@ -33,7 +33,7 @@ console.log('Verification key changed as expected.');
 const zkApp = new AccessImpossibleZkApp(zkAppAddress);
 
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 
 console.log(
@@ -82,7 +82,7 @@ try {
 }
 
 console.log('\n=== Step 3: Verify state unchanged ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const x = zkApp.x.get();
 console.log(`State x: ${x}`);
 x.assertEquals(Field(1));

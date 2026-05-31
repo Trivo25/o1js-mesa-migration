@@ -1,5 +1,5 @@
 import { AccountUpdate, Mina, UInt64, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { LockedTokenContract } from './contract.js';
 import { send } from 'process';
 
@@ -34,7 +34,7 @@ console.log('Verification key changed as expected.');
 const zkApp = new LockedTokenContract(zkAppAddress);
 
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 const totalSupplyBefore = zkApp.totalSupply.get();
 console.log(`Total supply before migration: ${totalSupplyBefore}`);
@@ -75,7 +75,7 @@ console.log('Verification key upgraded.');
 
 console.log('\n=== Step 3: Post-upgrade interaction (expecting success) ===');
 
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 
 const txSuccess = await Mina.transaction(
@@ -90,7 +90,7 @@ await sendAndWait(provenTxSuccess, [senderKey]);
 console.log('Post-upgrade mint succeeded.');
 
 console.log('\n=== Step 4: Verifying final state ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const totalSupplyAfter = zkApp.totalSupply.get();
 console.log(`Total supply after: ${totalSupplyAfter}`);
 

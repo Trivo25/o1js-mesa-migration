@@ -1,5 +1,5 @@
 import { Field, Mina, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { DefaultPermsZkApp } from './contract.js';
 
 configureNetwork();
@@ -16,7 +16,7 @@ console.log('Compilation complete.');
 const zkApp = new DefaultPermsZkApp(zkAppAddress);
 
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const stateBefore = zkApp.x.get();
 console.log(`State before update: ${stateBefore}`);
 
@@ -31,7 +31,7 @@ const provenTx = await tx.prove();
 await sendAndWait(provenTx, [senderKey]);
 
 console.log('\nFetching updated account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const stateAfter = zkApp.x.get();
 console.log(`State after update: ${stateAfter}`);
 

@@ -1,8 +1,15 @@
 import * as fs from 'fs';
-import { Mina, PrivateKey, PublicKey } from 'o1js';
+import { Mina, PrivateKey, PublicKey, fetchAccount } from 'o1js';
 import * as path from 'path';
 
-export { configureNetwork, loadKeys, loadSenderKey, saveKeys, sendAndWait };
+export {
+  configureNetwork,
+  loadKeys,
+  loadSenderKey,
+  saveKeys,
+  sendAndWait,
+  fetchAccountRetry,
+};
 
 type Keys = {
   zkAppKey: string;
@@ -85,4 +92,27 @@ async function sendAndWait(
   await pendingTx.wait({ maxAttempts: 90 });
   console.log('Transaction included.');
   return pendingTx;
+}
+
+// fetchAccount returns { account } when found and { error } when not — it never
+// throws. Right after a deploy the zkApp account isn't queryable immediately
+// (the endpoint lags block inclusion), so a single fetch returns not-found and
+// the following state.get() throws. Poll until the account shows up.
+async function fetchAccountRetry(
+  publicKey: PublicKey,
+  { maxAttempts = 20, interval = 5000 }: { maxAttempts?: number; interval?: number } = {}
+): Promise<void> {
+  for (let i = 1; i <= maxAttempts; i++) {
+    const { account, error } = await fetchAccount({ publicKey });
+    if (account) return;
+    if (i === maxAttempts) {
+      throw new Error(
+        `fetchAccountRetry: ${publicKey.toBase58()} not found after ${maxAttempts} attempts: ${error?.statusText ?? error}`
+      );
+    }
+    console.log(
+      `Account not on endpoint yet (attempt ${i}/${maxAttempts}), retrying in ${interval / 1000}s...`
+    );
+    await new Promise((resolve) => setTimeout(resolve, interval));
+  }
 }

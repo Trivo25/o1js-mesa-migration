@@ -1,5 +1,5 @@
 import { AccountUpdate, Field, Mina, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { AccessImpossibleZkApp } from './contract.js';
 
 configureNetwork();
@@ -17,7 +17,7 @@ console.log('Compilation complete.');
 const zkApp = new AccessImpossibleZkApp(zkAppAddress);
 
 console.log('\n=== Test: method call blocked by access: impossible (expecting failure) ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 
 try {

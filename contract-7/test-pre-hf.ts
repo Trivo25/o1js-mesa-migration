@@ -1,5 +1,5 @@
 import { AccountUpdate, Field, Mina, UInt64, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { LockedTokenContract } from './contract.js';
 
 configureNetwork();
@@ -22,7 +22,7 @@ console.log('Compilation complete.');
 const zkApp = new LockedTokenContract(zkAppAddress);
 
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const totalSupply = zkApp.totalSupply.get();
 console.log(`Total supply: ${totalSupply}`);
 
@@ -39,7 +39,7 @@ const provenTx = await tx.prove();
 await sendAndWait(provenTx, [senderKey]);
 
 console.log('\nFetching updated account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const totalSupplyAfter = zkApp.totalSupply.get();
 console.log(`Total supply after mint: ${totalSupplyAfter}`);
 

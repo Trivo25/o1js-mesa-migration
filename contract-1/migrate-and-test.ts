@@ -1,5 +1,5 @@
 import { AccountUpdate, Field, Mina, fetchAccount } from 'o1js';
-import { configureNetwork, loadKeys, sendAndWait } from '../util.js';
+import { configureNetwork, loadKeys, sendAndWait, fetchAccountRetry } from '../util.js';
 import { DefaultPermsZkApp } from './contract.js';
 
 configureNetwork();
@@ -33,7 +33,7 @@ console.log('Verification key changed as expected.');
 const zkApp = new DefaultPermsZkApp(zkAppAddress);
 
 console.log('\nFetching zkApp account...');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 const stateBeforeMigration = zkApp.x.get();
 console.log(`State before migration: ${stateBeforeMigration}`);
@@ -67,7 +67,7 @@ console.log('Verification key upgraded.');
 console.log('\n=== Step 3: Post-upgrade interaction (expecting success) ===');
 const postUpgradeValue = Field(200);
 
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 await fetchAccount({ publicKey: sender });
 
 const txSuccess = await Mina.transaction({ sender, fee: transactionFee }, async () => {
@@ -79,7 +79,7 @@ await sendAndWait(provenTxSuccess, [senderKey]);
 console.log('Post-upgrade interaction succeeded.');
 
 console.log('\n=== Step 4: Verifying final state ===');
-await fetchAccount({ publicKey: zkAppAddress });
+await fetchAccountRetry(zkAppAddress);
 const finalState = zkApp.x.get();
 console.log(`Final state: ${finalState}`);
 
