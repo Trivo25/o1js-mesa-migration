@@ -12,6 +12,7 @@
     "clean": "rm -rf dist",
     "run": "tsx",
     "setup-feepayers": "tsx setup-feepayers.ts",
+    "topup": "tsx topup-feepayers.ts",
     "pre-hf": "tsc && node dist/run-pre-hf.js",
     "post-hf": "tsc && node dist/run-post-hf.js"
   },

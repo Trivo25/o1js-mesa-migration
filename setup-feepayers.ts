@@ -15,7 +15,7 @@ import { configureNetwork, loadSenderKey } from './util.js';
 import { CONTRACT_DIRS } from './runner-utils.js';
 import * as fs from 'fs';
 
-const FUND_AMOUNT = UInt64.from(5n * 1_000_000_000n); // 5 MINA per feepayer
+const FUND_AMOUNT = UInt64.from(6n * 1_000_000_000n); // 6 MINA per feepayer
 const FEE = 100_000_000;
 
 const OUT_FILE = 'feepayers.json';
@@ -96,7 +96,11 @@ for (let start = 0; start < built.length; start += BATCH_SIZE) {
   );
 
   // submit sequentially in nonce order to keep the pool's nonce sequence gapless
-  const pendings: { dir: string; nonce: number; pending: Mina.PendingTransaction }[] = [];
+  const pendings: {
+    dir: string;
+    nonce: number;
+    pending: Mina.PendingTransaction;
+  }[] = [];
   for (const { dir, nonce, tx } of batch) {
     const pending = await tx.safeSend();
     if (pending.status === 'rejected') {
