@@ -15,7 +15,7 @@ import { configureNetwork, loadSenderKey } from './util.js';
 import { CONTRACT_DIRS } from './runner-utils.js';
 import * as fs from 'fs';
 
-const FUND_AMOUNT = UInt64.from(6n * 1_000_000_000n); // 6 MINA per feepayer
+const FUND_AMOUNT = UInt64.from(8n * 1_000_000_000n); // 8 MINA per feepayer
 const FEE = 100_000_000;
 
 const OUT_FILE = 'feepayers.json';
